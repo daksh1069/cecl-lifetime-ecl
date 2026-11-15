@@ -1,0 +1,52 @@
+# All paths are relative to the repository root.
+paths:
+  freddie_raw: data/raw/freddie
+  macro_raw: data/raw/macro
+  scenarios_raw: data/raw/scenarios
+  processed: data/processed
+  outputs: outputs
+
+data:
+  vintage_start: 2005
+  vintage_end: 2025         # loans open at the Dec 2025 reserve date include 2024-25 originations
+  loans_per_vintage: 5000   # random sample per origination year; null = keep every loan
+  seed: 590
+
+macro:
+  fred:                     # name used in the code: FRED series id
+    unrate: UNRATE          # unemployment rate, monthly
+    hpi: HPIPONM226S        # FHFA purchase-only house price index, monthly, SA
+    mort30: MORTGAGE30US    # 30-year fixed mortgage rate, weekly (averaged to monthly)
+  lag_months: 1             # macro data known with a one-month lag
+  long_run_start: "2000-01" # window for the long-run averages used after reversion
+
+default:
+  dpd_status: 6             # first time 180+ days past due ...
+  zb_codes: ["02", "03", "09"]   # ... or third-party sale / short sale / REO disposition
+  exclude_forbearance: true # 180+ dpd while in a forbearance plan (COVID) is not a default
+
+pd:
+  train_end: "2019-12"      # out-of-time backtest: fit up to here, test afterwards
+
+lgd:
+  cltv_bins: [60, 70, 80, 90, 100, 120]   # edges of the current-LTV buckets (%)
+  min_obs: 30               # buckets with fewer resolved defaults use the overall mean
+
+ecl:
+  as_of: "2025-12"          # reserve date; matches the 2026 stress test jump-off
+  forecast_months: 24       # reasonable and supportable forecast window
+  reversion_months: 12      # linear reversion to long-run macro conditions
+  discount: true            # discount at each loan's note rate
+  scenarios:                # Fed CSVs as downloaded, inside paths.scenarios_raw
+    baseline: 2026_Final_Supervisory_Baseline_Domestic.csv
+    severely_adverse: 2026_Final_Supervisory_Severely_Adverse_Domestic.csv
+  scenario_history: 2026_Final_Historic_Domestic.csv   # supplies the 2025 Q4 jump-off
+
+sensitivity:
+  forecast_months: [12, 24, 36]
+  reversion_months: [0, 12, 24]
+
+dfast:
+  # 2026 DFAST results, Table 9: domestic first-lien mortgages, severely adverse,
+  # 2026:Q1-2028:Q1, $22.5bn = 1.5% of average balances over the nine quarters.
+  published_first_lien_loss_rate: 1.5

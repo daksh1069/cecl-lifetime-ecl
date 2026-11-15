@@ -1,0 +1,19 @@
+# Overrides for the smoke test on made-up loans (`make synthetic`).
+# Only the keys listed here replace the ones in default.yaml.
+# Nothing produced with this config may be used in the report.
+paths:
+  freddie_raw: data/synthetic/freddie
+  scenarios_raw: data/synthetic/scenarios
+  processed: data/synthetic/processed
+  outputs: outputs_synthetic
+
+ecl:
+  scenarios:
+    baseline: baseline.csv
+    severely_adverse: severely_adverse.csv
+  scenario_history: null    # the synthetic files carry their own jump-off quarter
+
+data:
+  vintage_start: 2012
+  vintage_end: 2022
+  loans_per_vintage: null

@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# data and results are never committed (Freddie Mac licence + size)
+data/raw/*/*
+data/processed/**
+data/synthetic/
+outputs/**
+outputs_synthetic/
+!**/.gitkeep
+
+# LaTeX build files
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+
+submission.zip
